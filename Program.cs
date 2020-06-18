@@ -23,13 +23,26 @@ namespace WebCrawler_AngleSharp
             //view mor selectors syntax at
             //https://www.w3schools.com/cssref/css_selectors.asp
             //OR
-            var selectedItems = document.QuerySelectorAll("table.listingsTBL~td.TBLRoll~div.ListingDescription>a");
-            var i1 = document.QuerySelectorAll("table.listingsTBL");
+            //var selectedItems = document.QuerySelectorAll("table.listingsTBL td.TBLRoll div.ListingDescription>a");
+            var selectedItems = document.QuerySelectorAll("table.listingsTBL td.TBLRoll");
+            var i1 = document.QuerySelectorAll("table.listingsTBL td");
 
             foreach (var item in selectedItems)
             {
-                Console.WriteLine(item.Text());
-                Console.WriteLine(item.InnerHtml);
+                try
+                {
+                    //only get new item
+                    if (item.QuerySelector("div.ListingNewNDate>img") != null)
+                    {
+                        string content = item.QuerySelector("div.ListingDescription>a").Text().Trim();
+                        string datetime = item.QuerySelector("div.ListingNewNDate>span").Text();
+                        Console.WriteLine(content);
+                        Console.WriteLine(datetime);
+                    }
+                }
+                catch (Exception e) { 
+                //suppress exception
+                }
             }
         }
     }
